@@ -116,6 +116,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    onBlur: _react2.default.PropTypes.func,
 	    onChange: _react2.default.PropTypes.func.isRequired,
 	    onFocus: _react2.default.PropTypes.func,
+	    onInputKeyDown: _react2.default.PropTypes.func,
+	    onInputClick: _react2.default.PropTypes.func,
 	    openToDate: _react2.default.PropTypes.object,
 	    placeholderText: _react2.default.PropTypes.string,
 	    popoverAttachment: _react2.default.PropTypes.string,
@@ -141,6 +143,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      disabled: false,
 	      onFocus: function onFocus() {},
 	      onBlur: function onBlur() {},
+	      onInputKeyDown: function onInputKeyDown() {},
+	      onInputClick: function onInputClick() {},
 
 	      popoverAttachment: 'top left',
 	      popoverTargetAttachment: 'bottom left',
@@ -162,9 +166,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({ open: open });
 	  },
 	  setFocusedDateByKey: function setFocusedDateByKey(key) {
-	    this.setState({
-	      focused: this.nextFocus(key)
-	    });
+	    var next = this.nextFocus(key);
+	    this.setState({ focused: next });
 	  },
 	  setSelectedDateByKey: function setSelectedDateByKey(key) {
 	    if (key === 'Enter') {
@@ -186,6 +189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case 'ArrowRight':
 	        return this.state.focused.clone().add(1, 'days');
 	      default:
+	        return this.state.focused;
 	    }
 	  },
 	  handleBlur: function handleBlur(event) {
@@ -211,6 +215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!this.props.disabled) {
 	      this.setOpen(true);
 	    }
+	    this.props.onInputClick();
 	  },
 	  onInputKeyDown: function onInputKeyDown(event) {
 	    if (event.key === 'Enter' || event.key === 'Escape') {
@@ -223,6 +228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      event.preventDefault();
 	      this.setFocusedDateByKey(event.key);
 	    }
+	    this.props.onInputKeyDown(event);
 	  },
 	  onClearClick: function onClearClick(event) {
 	    event.preventDefault();

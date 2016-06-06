@@ -36,6 +36,8 @@ var DatePicker = React.createClass({
     onBlur: React.PropTypes.func,
     onChange: React.PropTypes.func.isRequired,
     onFocus: React.PropTypes.func,
+    onInputKeyDown: React.PropTypes.func,
+    onInputClick: React.PropTypes.func,
     openToDate: React.PropTypes.object,
     placeholderText: React.PropTypes.string,
     popoverAttachment: React.PropTypes.string,
@@ -60,6 +62,8 @@ var DatePicker = React.createClass({
       disabled: false,
       onFocus () {},
       onBlur () {},
+      onInputKeyDown () {},
+      onInputClick () {},
       popoverAttachment: 'top left',
       popoverTargetAttachment: 'bottom left',
       popoverTargetOffset: '10px 0',
@@ -85,9 +89,8 @@ var DatePicker = React.createClass({
   },
 
   setFocusedDateByKey (key) {
-    this.setState({
-      focused: this.nextFocus(key)
-    })
+    const next = this.nextFocus(key)
+    this.setState({ focused: next })
   },
 
   setSelectedDateByKey (key) {
@@ -112,6 +115,7 @@ var DatePicker = React.createClass({
       case 'ArrowRight':
         return this.state.focused.clone().add(1, 'days')
       default:
+        return this.state.focused
     }
   },
 
@@ -142,6 +146,7 @@ var DatePicker = React.createClass({
     if (!this.props.disabled) {
       this.setOpen(true)
     }
+    this.props.onInputClick();
   },
 
   onInputKeyDown (event) {
@@ -155,6 +160,7 @@ var DatePicker = React.createClass({
       event.preventDefault()
       this.setFocusedDateByKey(event.key)
     }
+    this.props.onInputKeyDown(event)
   },
 
   onClearClick (event) {
